@@ -2,6 +2,8 @@ package com.orion.exchangeapi.model;
 
 import io.swagger.annotations.ApiImplicitParam;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ public class ConversionRequestModel {
     private LocalDate date;
 
     @NotNull(message = "amount cannot be null")
+    @DecimalMin(value = "0.01", message = "Amount must be bigger than 0.01")
     private BigDecimal amount;
 
     public Currency getBaseCurrency() {
