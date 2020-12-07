@@ -13,5 +13,5 @@ public interface ConversionApiService {
 
     ConversionResponseModel conversion(ConversionRequestModel request);
 
-    Page<ConversionDetailModel> searchConversions(UUID transactionId, LocalDate transactionDate, Pageable pageable);
+    Page<ConversionDetailModel> search(UUID transactionId, LocalDate transactionDate, Pageable pageable);
 }

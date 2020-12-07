@@ -22,9 +22,9 @@ public class ConversionServiceImpl implements ConversionService {
     }
 
     @Override
-    public Conversion saveConversion(Currency baseCurrency, Currency targetCurrency,
-                                     BigDecimal amount, BigDecimal convertedAmount, BigDecimal rate,
-                                     LocalDate date) {
+    public Conversion save(Currency baseCurrency, Currency targetCurrency,
+                           BigDecimal amount, BigDecimal convertedAmount, BigDecimal rate,
+                           LocalDate date) {
 
         Conversion conversion = new Conversion();
         conversion.setTransactionId(UUID.randomUUID());
@@ -40,7 +40,7 @@ public class ConversionServiceImpl implements ConversionService {
     }
 
     @Override
-    public Page<Conversion> searchConversions(UUID transactionId, LocalDate transactionDate, Pageable pageable) {
+    public Page<Conversion> search(UUID transactionId, LocalDate transactionDate, Pageable pageable) {
         return conversionRepository.findAll(new ConversionSpecification(transactionId, transactionDate), pageable);
     }
 }

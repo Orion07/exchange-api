@@ -45,7 +45,7 @@ public class ConversionApiServiceImpl implements ConversionApiService {
         BigDecimal rate = exchangeRate.getRate();
         BigDecimal convertedAmount = request.getAmount().multiply(rate);
 
-        Conversion conversion = conversionService.saveConversion(request.getBaseCurrency(), request.getTargetCurrency(),
+        Conversion conversion = conversionService.save(request.getBaseCurrency(), request.getTargetCurrency(),
                 request.getAmount(), convertedAmount, rate, request.getDate());
 
         if (conversion == null) {
@@ -66,8 +66,8 @@ public class ConversionApiServiceImpl implements ConversionApiService {
     }
 
     @Override
-    public Page<ConversionDetailModel> searchConversions(UUID transactionId, LocalDate transactionDate, Pageable pageable) {
-        Page<Conversion> conversions = conversionService.searchConversions(transactionId, transactionDate, pageable);
+    public Page<ConversionDetailModel> search(UUID transactionId, LocalDate transactionDate, Pageable pageable) {
+        Page<Conversion> conversions = conversionService.search(transactionId, transactionDate, pageable);
         if (conversions != null) {
             return conversions.map(conversion -> {
                 ConversionDetailModel model = new ConversionDetailModel();

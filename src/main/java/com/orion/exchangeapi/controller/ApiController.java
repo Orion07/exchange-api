@@ -43,14 +43,12 @@ public class ApiController {
     public ExchangeRateResponseModel exchangeRate(@RequestParam("baseCurrency") Currency baseCurrency,
                                                   @RequestParam("targetCurrency") Currency targetCurrency,
                                                   @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        ExchangeRateResponseModel response = exchangeService.getExchangeRate(baseCurrency, targetCurrency, date);
-        return response;
+        return exchangeService.getExchangeRate(baseCurrency, targetCurrency, date);
     }
 
     @PostMapping("/conversion")
     public ConversionResponseModel conversion(@Valid @RequestBody ConversionRequestModel request) {
-        ConversionResponseModel response = conversionApiService.conversion(request);
-        return response;
+        return conversionApiService.conversion(request);
     }
 
     @ApiImplicitParam(name = "transactionDate", dataType = "date", paramType = "query", value = "Date format should be like this yyyy-MM-dd")
@@ -58,7 +56,6 @@ public class ApiController {
     public Page<ConversionDetailModel> conversion(@RequestParam(value = "transactionId", required = false) UUID transactionId,
                                                   @RequestParam(value = "transactionDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate transactionDate,
                                                   Pageable pageable) {
-        Page<ConversionDetailModel> response = conversionApiService.searchConversions(transactionId, transactionDate, pageable);
-        return response;
+        return conversionApiService.search(transactionId, transactionDate, pageable);
     }
 }

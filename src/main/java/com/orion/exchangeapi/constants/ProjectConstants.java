@@ -1,6 +1,8 @@
 package com.orion.exchangeapi.constants;
 
-public abstract class ProjectConstants {
+public class ProjectConstants {
+
+    private ProjectConstants() { }
 
     public static final int HTTP_REQUEST_TIMEOUT = 30;
 

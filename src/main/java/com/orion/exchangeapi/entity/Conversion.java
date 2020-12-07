@@ -35,7 +35,7 @@ public class Conversion extends BaseEntity {
     private LocalDate rateDate;
 
     @PrePersist
-    public void prePersistyRateDate() {
+    public void prePersistRateDate() {
         if (this.rateDate == null) {
             this.rateDate = LocalDate.now();
         }

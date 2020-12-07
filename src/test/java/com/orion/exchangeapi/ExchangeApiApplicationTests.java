@@ -42,6 +42,7 @@ class ExchangeApiApplicationTests {
         request.setAmount(new BigDecimal("100"));
 
         Mockito.when(mockExchangeService.getExchangeRate(request.getBaseCurrency(), request.getTargetCurrency(), null)).thenReturn(null);
+
         ApiException apiException = Assertions.assertThrows(ApiException.class, () -> mockConversionApiService.conversion(request));
         Assertions.assertEquals(ErrorEnum.RATE_NOT_FOUND, apiException.getError());
     }
@@ -67,7 +68,7 @@ class ExchangeApiApplicationTests {
         exchangeRate.setSuccess(true);
 
         Mockito.when(mockExchangeService.getExchangeRate(baseCurrency, targetCurrency, null)).thenReturn(exchangeRate);
-        Mockito.when(mockConversionService.saveConversion(baseCurrency, targetCurrency, amount, amount.multiply(rate), rate, null)).thenReturn(null);
+        Mockito.when(mockConversionService.save(baseCurrency, targetCurrency, amount, amount.multiply(rate), rate, null)).thenReturn(null);
 
         ApiException apiException = Assertions.assertThrows(ApiException.class, () -> mockConversionApiService.conversion(request));
         Assertions.assertEquals(ErrorEnum.INTERNAL_SERVER_ERROR, apiException.getError());
@@ -104,7 +105,7 @@ class ExchangeApiApplicationTests {
         conversion.setTransactionId(UUID.randomUUID());
         conversion.setRateDate(LocalDate.now());
         conversion.setCreateDate(LocalDateTime.now());
-        Mockito.when(mockConversionService.saveConversion(baseCurrency, targetCurrency, amount, convertedAmount, rate, null)).thenReturn(conversion);
+        Mockito.when(mockConversionService.save(baseCurrency, targetCurrency, amount, convertedAmount, rate, null)).thenReturn(conversion);
 
         ConversionResponseModel response = mockConversionApiService.conversion(request);
         Assertions.assertNotNull(response);

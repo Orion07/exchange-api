@@ -39,7 +39,6 @@ public class HttpClientConfig {
             LOG.error("::getHttpClient", e);
         }
 
-        CloseableHttpClient httpClient = builder.setDefaultRequestConfig(config).build();
-        return httpClient;
+        return builder.setDefaultRequestConfig(config).build();
     }
 }

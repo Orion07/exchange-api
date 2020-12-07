@@ -11,10 +11,10 @@ import java.util.UUID;
 
 public interface ConversionService {
 
-    Conversion saveConversion(Currency baseCurrency, Currency targetCurrency,
-                              BigDecimal amount, BigDecimal convertedAmount, BigDecimal rate,
-                              LocalDate date);
+    Conversion save(Currency baseCurrency, Currency targetCurrency,
+                    BigDecimal amount, BigDecimal convertedAmount, BigDecimal rate,
+                    LocalDate date);
 
-    Page<Conversion> searchConversions(UUID transactionId, LocalDate transactionDate, Pageable pageable);
+    Page<Conversion> search(UUID transactionId, LocalDate transactionDate, Pageable pageable);
 
 }
