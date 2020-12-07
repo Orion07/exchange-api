@@ -5,14 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.List;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -44,6 +43,20 @@ public class RestExceptionHandler {
         if(bindingResult != null && !CollectionUtils.isEmpty(bindingResult.getAllErrors())) {
             ObjectError objectError = bindingResult.getAllErrors().get(0);
             response.setErrorMessage(objectError.getDefaultMessage());
+        } else {
+            response.setErrorMessage(exception.getMessage());
+        }
+        response.setSuccess(false);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponseModel> httpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        BaseResponseModel response = new BaseResponseModel();
+        Throwable cause = exception.getCause();
+        if (cause != null) {
+            String message = cause.getMessage();
+            response.setErrorMessage(message);
         } else {
             response.setErrorMessage(exception.getMessage());
         }
