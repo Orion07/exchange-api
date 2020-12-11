@@ -6,7 +6,9 @@ import com.orion.exchangeapi.service.HttpService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,25 @@ public class ApacheHttpService implements HttpService {
             return objectMapper.readValue(responseBody, responseClass);
         } catch (Exception e) {
             LOG.error("::get uri:{}", uri, e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public <T> T post(URI uri, Map<String, String> headers, Map<String, Object> body, Class<T> responseClass) {
+        HttpPost httpPost = new HttpPost(uri);
+        prepareHeaders(httpPost, headers);
+
+        try {
+            String requestBody = objectMapper.writeValueAsString(body);
+            httpPost.setEntity(new StringEntity(requestBody));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            String responseBody = EntityUtils.toString(httpResponse.getEntity(), ProjectConstants.CHARSET);
+            LOG.info("::post uri:{}, request:{}, response:{}", uri, requestBody, responseBody);
+            return objectMapper.readValue(responseBody, responseClass);
+        } catch (Exception e) {
+            LOG.error("::post uri:{}", uri, e);
         }
 
         return null;
